@@ -24,12 +24,13 @@ This package exports a single namespace: `Emojis`. It's a `Mongo.Collection`, an
 
 ### Emoji images
 
-This package **does not** include the actual images for the emojis. This is due to flexibility and copyright issues. You can however checkout these open source emoji projects:
+This package **does not** include the actual images for the emojis. You can however checkout the images in these emoji projects:
 
 - [Twemoji by Twitter](https://github.com/twitter/twemoji/)
 - [Emojione](https://github.com/Ranks/emojione)
+- [Gemoji by GitHub](https://github.com/github/gemoji) *(beware: emoji images in here are copyrighted by Apple)*
 
-This package assumes the images are named with their hexadecimal unicode name, and are PNGs.
+This package assumes the images are in PNG format and named with their hexadecimal unicode name (like `1f604.png` for the `smile` emoji).
 
 You would typically put the emoji images in the `public/images` directory, in an `emojis` folder. If not, be sure to call `Emojis.setBasePath()` with the custom path (see the API functions below).
 
@@ -192,7 +193,7 @@ You can override this function with your own template function if you want to. T
   The `emoji` parameter is an emoji object from the collection.
 */
 Emojis.template = function(emoji) {
-  return "<img src='" + Emojis.basePath() + "/" + emoji.path + "' title='" + emoji.alias + "' alt='" + emoji.emoji || emoji.alias + "' class='emoji'>";
+  return "<img src='" + emoji.path + "' title='" + emoji.alias + "' alt='" + emoji.emoji || emoji.alias + "' class='emoji'>";
 };
 ```
 
@@ -202,11 +203,16 @@ Emojis.template = function(emoji) {
 
 The *base path* is where the package shall put in front of the image name. Defaults to `/images/emojis`. Set this in some init routine of yours. 
 
-If you're using a CDN network like CloudFront or similar, you should call this function to cache all emojis.
+If you're using a CDN network like CloudFront or similar, you should call this function with the root CDN path in order to use the CDN niceties.
 
-Sample usage (assuming you store your CDN url in `Meteor.settings.public.cdnUrl`):
+Sample usage:
 
 ```js
+// Assume:
+Meteor.settings.public.cdnUrl = 'https://foobar.cloudfront.net';
+
+// ...
+
 if(Meteor.settings.public.cdnUrl) {
   Emojis.setBasePath(Meteor.settings.public.cdnUrl + '/images/emojis');
 }
@@ -241,6 +247,27 @@ Meteor.methods({
     return 'Inserted ' + count + ' emojis.';
   }
 });
+```
+
+## Suggested styling
+
+Style the `.emoji` class like this with CSS to achieve a nice vertical aligned position for the emoji images:
+
+```css
+.emoji {
+  font-size: inherit;
+  height: 2.7ex;
+  /* prevent img stretch */
+  width: auto;
+  min-width: 15px;
+  min-height: 15px;
+
+  /* Inline alignment adjust the margins  */
+  display: inline-block;
+  margin: -0.4ex .15em 0;
+  line-height: normal;
+  vertical-align: middle;
+}
 ```
 
 ## Tests
