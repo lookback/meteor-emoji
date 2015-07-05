@@ -2,7 +2,7 @@ var both = ['client', 'server'];
 
 Package.describe({
   name: 'lookback:emoji',
-  summary: 'Emoji collection for Meteor.',
+  summary: 'Easily render and manage emojis in Meteor.',
   version: '0.1.0',
   git: 'https://github.com/lookback/meteor-emoji'
 });
