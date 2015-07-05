@@ -1,14 +1,14 @@
-# Emojis for Meteor
+# Emojis for Meteor 😄
 
-This package makes it easier to manage emojis in your Meteor app.
+This package makes it easier to manage 💖💥🌈 in your Meteor app.
 
 ## Features
 
-- Adds an `Emoji` collection to the client and server filled with over 800 emojis. Suitable for autocompletions and similar.
-- Includes `emoji` template helpers for easy rendering of emojis inside your Meteor templates.
-- Parses arbitrary strings and replaces any emoji shortnames with emoji images.
-- Parses common ASCII smileys and maps to corresponding emoji.
-- Customizable base directory for the emoji images. Suitable for CDN usage.
+- ✅ Adds an `Emoji` collection to the client and server filled with over 800 emojis. Suitable for autocompletions and similar.
+- ✅ Includes `emoji` template helpers for easy rendering of emojis inside your Meteor templates.
+- ✅ Parses arbitrary strings and replaces any emoji shortnames with emoji images.
+- ✅ Parses common ASCII smileys and maps to corresponding emoji.
+- ✅ Customizable base directory for the emoji images. Suitable for CDN usage.
 
 ## Installation
 
