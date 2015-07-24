@@ -1,6 +1,14 @@
 should()
 
+if Meteor.isServer
+  Meteor.publish 'emojis', ->
+    Emojis.find()
+
 describe 'Emojis', ->
+
+  if Meteor.isClient
+    before (done) ->
+      Meteor.subscribe 'emojis', -> done()
 
   beforeEach ->
     Emojis._basePath = '/images/emojis'
@@ -38,4 +46,27 @@ describe 'Emojis', ->
       template = Emojis.template(@customEmoji)
       template.should.equal "<img src='/images/emojis/trollface.png' title='trollface' alt='trollface' class='emoji'>"
 
+  describe '#toUnicode', ->
 
+    it 'should convert shortnames in a text to unicode emojis', ->
+
+      text = 'Hello there :boom:'
+      result = Emojis.toUnicode(text)
+      result.should.contain('💥').and.not.contain ':boom:'
+
+  describe '#parse', ->
+
+    beforeEach ->
+      @text = 'Hello :boom: I am a :D. This is no a smiley:) and this is not an emoji:+1:'
+
+    it 'should parse text to emoji images', ->
+
+      result = Emojis.parse(@text)
+
+      result.should
+        .contain "<img src='/images/emojis/1f4a5.png' title='boom' alt='💥' class='emoji'>"
+        .and.contain "<img src='/images/emojis/1f603.png' title='smiley' alt='😃' class='emoji'>"
+        .and.contain ':)'
+        .and.contain ':+1:'
+        .and.not.contain ':boom:'
+        .and.not.contain ':D'
