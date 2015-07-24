@@ -92,7 +92,7 @@ This package always assumes this data structure when reasoning about an *emoji o
 The `Emojis.parse` function takes this:
 
 ```
-A text with some emojis or smileys :D :boom: :smile: 
+A text with some emojis or smileys :D :boom: :smile:
 ```
 
 and outputs this:
@@ -201,7 +201,7 @@ Emojis.template = function(emoji) {
 
 *Client and server.*
 
-The *base path* is where the package shall put in front of the image name. Defaults to `/images/emojis`. Set this in some init routine of yours. 
+The *base path* is where the package shall put in front of the image name. Defaults to `/images/emojis`. Set this in some init routine of yours.
 
 If you're using a CDN network like CloudFront or similar, you should call this function with the root CDN path in order to use the CDN niceties.
 
@@ -277,6 +277,11 @@ Run tests with
 ```
 meteor test-packages --velocity --driver-package respondly:test-reporter lookback:emoji
 ```
+
+## Version history
+
+- `0.2.0` - Add `Emojis.toUnicode` function.
+- `0.1.0` - Initial publish.
 
 ***
 
