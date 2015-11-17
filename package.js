@@ -10,7 +10,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.0.4.2');
 
-  api.use(['mongo', 'coffeescript', 'underscore'], both);
+  api.use(['mongo', 'coffeescript', 'check', 'underscore'], both);
   api.use('templating', 'client');
 
   api.addFiles('seed/emojis.json', 'server', {isAsset: true});
