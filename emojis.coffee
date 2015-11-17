@@ -112,3 +112,21 @@ Emojis.toUnicode = (text) ->
 # Replace emoji shortnames with images.
 Emojis.parse = (text) ->
   parse(text, Emojis.template)
+
+Emojis.isSupported = ->
+  if !document.createElement('canvas').getContext
+    return
+
+  context = document.createElement('canvas').getContext('2d')
+
+  if typeof context.fillText isnt 'function'
+    return
+
+  # :smile: String.fromCharCode(55357) + String.fromCharCode(56835)
+  smile = String.fromCodePoint(0x1F604)
+
+  context.textBaseline = "top"
+  context.font = "32px Arial"
+  context.fillText(smile, 0, 0)
+
+  context.getImageData(16, 16, 1, 1).data[0] isnt 0
