@@ -4,10 +4,12 @@ This package makes it easier to manage 💖💥🌈 in your Meteor app.
 
 ## Features
 
+- ✅ Renders unicode emojis from shortnames (:smile:).
 - ✅ Adds an `Emoji` collection to the client and server filled with over 800 emojis. Suitable for autocompletions and similar.
 - ✅ Includes `emoji` template helpers for easy rendering of emojis inside your Meteor templates.
-- ✅ Parses arbitrary strings and replaces any emoji shortnames with emoji images.
+- ✅ Parses arbitrary strings and replaces any emoji shortnames with emoji unicode representations.
 - ✅ Parses common ASCII smileys and maps to corresponding emoji.
+- ✅ Detects unicode emojis support and fallbacks to images.
 - ✅ Customizable base directory for the emoji images. Suitable for CDN usage.
 
 ## Installation
@@ -23,6 +25,8 @@ You're not done yet! Continue reading ...
 This package exports a single namespace: `Emojis`. It's a `Mongo.Collection`, and includes some custom methods (see *API* below).
 
 ### Emoji images
+
+Some browsers on some systems still don't support native unicode emojis. Read more here: [caniemoji.com](http://caniemoji.com). So we need to fallback to image representations in that case.
 
 This package **does not** include the actual images for the emojis. You can however checkout the images in these emoji projects:
 
@@ -98,7 +102,7 @@ A text with some emojis or smileys :D :boom: :smile:
 and outputs this:
 
 ```html
-A text with some emojis or smileys <img src="/images/emojis/1f603.png" title="smiley" alt="😃" class="emoji"> <img src="/images/emojis/1f4a5.png" title="boom" alt="💥" class="emoji"> <img src="/images/emojis/1f604.png" title="smile" alt="😄" class="emoji">
+A text with some emojis or smileys <span title="smiley" class="emoji">😃</span> <span title="boom" class="emoji">💥</span> <span title="smile" class="emoji">😄</span>
 ```
 
 ### Template helpers
@@ -132,20 +136,33 @@ The full path for this emoji:
 ```js
 var emoji = Emojis.findOne({alias: 'smile'});
 console.log(emoji.path);
-
 // => "/images/emojis/1f604.png"
 ```
 
 #### `emoji.toHTML() -> String`
 
-Shortcut function that calls `Emojis.template()` for this specific emoji object.
+Shortcut function that returns the HTML representation of the emoji.
+
+This depends on these parameters:
+
+- `Emojis.useImages` - force use of image emojis.
+- `Emojis.isSupported` - if unicode emojis is supported in the browser or not.
+- if the emoji is custom (not in standard unicode).
+
+If emojis aren't supported, `toHTML()` will fallback to images.
 
 ```js
+// Default behavior.
 var emoji = Emojis.findOne({alias: 'smile'});
 console.log(emoji.toHTML());
+// => <span title="smile" class="emoji">😄</span>
 
-// => <img src="/images/emojis/1f604.png" title="smile" alt="😄" class="emoji">
+var custom = Emojis.findOne({alias: 'trollface'});
+console.log(emoji.toHTML());
+// => <img src="images/trollface.png" title="trollface" alt="trollface">
 ```
+
+You can use `Emojis.useImages` (defaults to the inverse of `Emojis.isSupported`) to force use of images.
 
 #### `emoji.toHex() -> String`
 
@@ -157,6 +174,16 @@ console.log(emoji.toHex());
 
 // => "1f604"
 ```
+
+### Static properties
+
+#### `Emojis.useImages`
+
+Defaults to the inverse of `Emojis.isSupported`. Set to `true` to force use of images.
+
+#### `Emojis.isSupported`
+
+Checks browser support for unicode emojis.
 
 ### Static functions
 
@@ -176,6 +203,10 @@ The emoji images will be on this format:
 <img src="/images/emojis/1f4a5.png" title="boom" alt="💥" class="emoji">
 ```
 
+### `Emojis.toUnicode(text:String) -> String`
+
+Parses a text and converts any shortcodes to unicode emojis.
+
 #### `Emojis.template(emoji:Object) -> String`
 
 Takes an *emoji object* and returns its HTML representation.
@@ -183,7 +214,7 @@ Takes an *emoji object* and returns its HTML representation.
 ```js
 var emoji = Emojis.findOne({alias: 'smile'});
 console.log(Emojis.template(emoji));
-// => <img src="/images/emojis/1f604.png" title="smile" alt="😄" class="emoji">
+// => <span class='emoji' title='smile'>😄</span>
 ```
 
 You can override this function with your own template function if you want to. The default one looks like this:
@@ -193,8 +224,18 @@ You can override this function with your own template function if you want to. T
   The `emoji` parameter is an emoji object from the collection.
 */
 Emojis.template = function(emoji) {
-  return "<img src='" + emoji.path + "' title='" + emoji.alias + "' alt='" + emoji.emoji || emoji.alias + "' class='emoji'>";
+  return '<span class="emoji" title="' + emoji.alias + '">' + emoji.emoji + '</span>';
 };
+```
+
+#### `Emojis.imageTemplate(emoji:Object) -> String`
+
+Same as `Emojis.template`, but for images.
+
+```js
+var emoji = Emojis.findOne({alias: 'smile'});
+console.log(Emojis.imageTemplate(emoji));
+// => <img src="/images/emojis/1f604.png" title="smile" alt="😄" class="emoji">
 ```
 
 #### `Emojis.setBasePath(path:String)`
