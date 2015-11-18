@@ -13,7 +13,7 @@ Package.onUse(function(api) {
   api.use(['mongo', 'coffeescript', 'check', 'underscore'], both);
   api.use('templating', 'client');
 
-  api.addFiles('seed/emojis.json', 'server', {isAsset: true});
+  api.addAssets('seed/emojis.json', 'server');
 
   api.addFiles('emojis.coffee', both);
   api.addFiles('template.coffee', 'client');
