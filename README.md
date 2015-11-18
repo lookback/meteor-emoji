@@ -254,7 +254,7 @@ Meteor.methods({
 Style the `.emoji` class like this with CSS to achieve a nice vertical aligned position for the emoji images:
 
 ```css
-.emoji {
+img.emoji {
   font-size: inherit;
   height: 2.7ex;
   /* prevent img stretch */
@@ -275,11 +275,22 @@ Style the `.emoji` class like this with CSS to achieve a nice vertical aligned p
 Run tests with
 
 ```
-meteor test-packages --velocity --driver-package respondly:test-reporter lookback:emoji
+make test
+```
+
+In browser:
+
+```
+make runner
 ```
 
 ## Version history
 
+- `0.3.0`
+  This release moves to using native unicode emojis as default. If native emojis are not supported in the browser, it'll fallback to the previous image solution.
+
+  - Add `Emojis.isSupported` variable for checking for native unicode support.
+  - Add `Emojis.useImages` for forcing use of images over unicode.
 - `0.2.0` - Add `Emojis.toUnicode` function.
 - `0.1.0` - Initial publish.
 

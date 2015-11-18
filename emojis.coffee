@@ -40,6 +40,12 @@ imagePath = (emoji) ->
   else
     "#{toHex(emoji.emoji).replace(/-fe0f\b/, '')}.png"
 
+toImage = (emoji) ->
+  "<img src='#{emoji.path}' title='#{emoji.alias}' alt='#{emoji.emoji or emoji.alias}' class='emoji'>"
+
+wrap = (emoji) ->
+  "<span class='emoji' title='#{emoji.alias}'>#{emoji.emoji}</span>"
+
 Emojis = new Mongo.Collection 'emojis',
   transform: (emoji) ->
 
@@ -48,7 +54,7 @@ Emojis = new Mongo.Collection 'emojis',
     emoji.path = Emojis.basePath() + '/' + imagePath(emoji)
 
     emoji.toHTML = ->
-      Emojis.template(this)
+      if !Emojis.isSupported or isCustom(this) or Emojis.useImages then Emojis.imageTemplate(this) else Emojis.template(this)
 
     emoji.toHex = ->
       toHex(@emoji)
@@ -101,23 +107,28 @@ Emojis.setBasePath = (path) ->
 Emojis.basePath = ->
   Emojis._basePath
 
-Emojis.template = (emoji) ->
-  "<img src='#{Emojis.basePath()}/#{imagePath(emoji)}' title='#{emoji.alias}' alt='#{emoji.emoji or emoji.alias}' class='emoji'>"
+# Overridable
+
+Emojis.template = wrap
+Emojis.imageTemplate = toImage
 
 # Replace emoji shortnames with their unicode version.
 Emojis.toUnicode = (text) ->
-  parse text, (emoji) ->
-    emoji.emoji
+  parse text, (emoji) -> emoji.emoji || ''
 
-# Replace emoji shortnames with images.
 Emojis.parse = (text) ->
-  parse(text, Emojis.template)
+  parse text, (emoji) -> emoji.toHTML()
 
-Emojis.isSupported = ->
-  if !document.createElement('canvas').getContext
+# From https://gist.github.com/mwunsch/4710561
+Emojis.isSupported = do ->
+  if Meteor.isServer
+    return true
+
+  canvas = document.createElement('canvas')
+  if !canvas.getContext
     return
 
-  context = document.createElement('canvas').getContext('2d')
+  context = canvas.getContext('2d')
 
   if typeof context.fillText isnt 'function'
     return
@@ -130,3 +141,8 @@ Emojis.isSupported = ->
   context.fillText(smile, 0, 0)
 
   context.getImageData(16, 16, 1, 1).data[0] isnt 0
+
+if Meteor.isClient
+  Emojis.useImages ||= !Emojis.isSupported
+else
+  Emojis.useImages ||= false

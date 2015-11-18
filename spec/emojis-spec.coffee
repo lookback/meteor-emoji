@@ -1,10 +1,10 @@
 should()
 
-if Meteor.isServer
-  Meteor.publish 'emojis', ->
-    Emojis.find()
-
 describe 'Emojis', ->
+
+  before ->
+    Emojis.isSupported = true
+    Emojis.useImages = false
 
   if Meteor.isClient
     before (done) ->
@@ -36,31 +36,40 @@ describe 'Emojis', ->
       Emojis.setBasePath '/some/path/'
       Emojis._basePath.should.equal '/some/path'
 
-  describe '#template', ->
-
-    it 'should return a string template for an emoji', ->
-      template = Emojis.template(@emoji)
-      template.should.equal "<img src='/images/emojis/1f604.png' title='smile' alt='😄' class='emoji'>"
-
-    it 'should return a string template for a custom emoji', ->
-      template = Emojis.template(@customEmoji)
-      template.should.equal "<img src='/images/emojis/trollface.png' title='trollface' alt='trollface' class='emoji'>"
-
   describe '#toUnicode', ->
 
     it 'should convert shortnames in a text to unicode emojis', ->
-
       text = 'Hello there :boom:'
       result = Emojis.toUnicode(text)
       result.should.contain('💥').and.not.contain ':boom:'
+
+    it 'should not try to convert custom emojis', ->
+      text = 'Hello there :trollface:'
+      result = Emojis.toUnicode(text)
+      result.should.equal 'Hello there '
 
   describe '#parse', ->
 
     beforeEach ->
       @text = 'Hello :boom: I am a :D. This is no a smiley:) and this is not an emoji:+1:'
 
-    it 'should parse text to emoji images', ->
+    afterEach ->
+      Emojis.useImages = false
+      Emojis.isSupported = true
 
+    it 'should parse text to emoji', ->
+      result = Emojis.parse(@text)
+
+      result.should
+        .contain "<span class='emoji' title='boom'>💥</span>"
+        .contain "<span class='emoji' title='smiley'>😃</span>"
+        .and.contain ':)'
+        .and.contain ':+1:'
+        .and.not.contain ':boom:'
+        .and.not.contain ':D'
+
+    it 'should parse text to emoji images', ->
+      Emojis.useImages = true
       result = Emojis.parse(@text)
 
       result.should
