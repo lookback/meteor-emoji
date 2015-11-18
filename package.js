@@ -25,13 +25,15 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use([
     'coffeescript',
-    'mike:mocha-package',
+    'practicalmeteor:mocha',
     'practicalmeteor:chai',
     'practicalmeteor:sinon',
-    'respondly:test-reporter',
     'lookback:emoji'
   ]);
 
-  api.addFiles('spec/emojis-spec.coffee');
-  api.addFiles('spec/emojis-server-spec.coffee', 'server');
+  api.addFiles([
+    'spec/setup.coffee',
+    'spec/emojis-spec.coffee',
+    'spec/emojis-transforms-spec.coffee'
+  ]);
 });
