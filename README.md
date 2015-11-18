@@ -203,7 +203,7 @@ The emoji images will be on this format:
 <img src="/images/emojis/1f4a5.png" title="boom" alt="💥" class="emoji">
 ```
 
-### `Emojis.toUnicode(text:String) -> String`
+#### `Emojis.toUnicode(text:String) -> String`
 
 Parses a text and converts any shortcodes to unicode emojis.
 
