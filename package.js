@@ -15,7 +15,7 @@ Package.onUse(function(api) {
 
   api.addAssets('seed/emojis.json', 'server');
 
-  api.addFiles('emojis.coffee', both);
+  api.addFiles(['polyfill.js', 'emojis.coffee'], both);
   api.addFiles('template.coffee', 'client');
   api.addFiles('seed/seed.coffee', 'server');
 
