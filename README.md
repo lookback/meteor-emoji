@@ -327,6 +327,7 @@ make runner
 
 ## Version history
 
+- `0.3.1` - Add polyfill for `String.fromCodePoint`.
 - `0.3.0`
   This release moves to using native unicode emojis as default. If native emojis are not supported in the browser, it'll fallback to the previous image solution.
 
