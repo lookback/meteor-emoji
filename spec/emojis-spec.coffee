@@ -51,7 +51,7 @@ describe 'Emojis', ->
   describe '#parse', ->
 
     beforeEach ->
-      @text = 'Hello :boom: I am a :D. This is no a smiley:) and this is not an emoji:+1:'
+      @text = 'Hello :boom: I am a :D and :\') This is no a smiley:) and this is not an emoji:+1:'
 
     afterEach ->
       Emojis.useImages = false
@@ -63,10 +63,12 @@ describe 'Emojis', ->
       result.should
         .contain "<span class='emoji' title='boom'>💥</span>"
         .contain "<span class='emoji' title='smiley'>😃</span>"
+        .contain "<span class='emoji' title='joy'>😂</span>"
         .and.contain ':)'
         .and.contain ':+1:'
         .and.not.contain ':boom:'
         .and.not.contain ':D'
+        .and.not.contain ":')"
 
     it 'should parse text to emoji images', ->
       Emojis.useImages = true
