@@ -3,6 +3,9 @@ should()
 describe 'Emojis', ->
 
   before ->
+    if Emojis.find().count() is 0
+      Emojis.seed()
+
     Emojis.isSupported = true
     Emojis.useImages = false
 
@@ -50,34 +53,33 @@ describe 'Emojis', ->
 
   describe '#parse', ->
 
-    beforeEach ->
-      @text = 'Hello :boom: I am a :D and :\') This is no a smiley:) and this is not an emoji:+1:'
+    text = "Hello :boom: I am a :D and :') This is no a smiley:) and this is not an emoji:+1:"
 
-    afterEach ->
+    beforeEach ->
       Emojis.useImages = false
       Emojis.isSupported = true
 
     it 'should parse text to emoji', ->
-      result = Emojis.parse(@text)
+      result = Emojis.parse(text)
 
       result.should
         .contain "<span class='emoji' title='boom'>💥</span>"
         .contain "<span class='emoji' title='smiley'>😃</span>"
-        .contain "<span class='emoji' title='joy'>😂</span>"
-        .and.contain ':)'
+        .contain "<span class='emoji' title='blush'>😊</span>"
         .and.contain ':+1:'
+        .and.contain ":')"
+        .and.not.contain ':)'
         .and.not.contain ':boom:'
         .and.not.contain ':D'
-        .and.not.contain ":')"
 
     it 'should parse text to emoji images', ->
       Emojis.useImages = true
-      result = Emojis.parse(@text)
+      result = Emojis.parse(text)
 
       result.should
         .contain "<img src='/images/emojis/1f4a5.png' title='boom' alt='💥' class='emoji'>"
         .and.contain "<img src='/images/emojis/1f603.png' title='smiley' alt='😃' class='emoji'>"
-        .and.contain ':)'
         .and.contain ':+1:'
+        .and.not.contain ':)'
         .and.not.contain ':boom:'
         .and.not.contain ':D'

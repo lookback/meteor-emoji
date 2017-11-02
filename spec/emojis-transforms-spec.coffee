@@ -42,7 +42,7 @@ describe 'Emojis', ->
 
     describe '#toHTML', ->
 
-      afterEach ->
+      beforeEach ->
         Emojis.isSupported = true
         Emojis.useImages = false
 
