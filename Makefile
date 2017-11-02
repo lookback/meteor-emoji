@@ -1,7 +1,7 @@
 runner:
-	@meteor test-packages --driver-package=practicalmeteor:mocha --port 5001 ./
+	@TEST_WATCH=1 meteor test-packages --driver-package=meteortesting:mocha --port 5001 ./
 
 test:
-	@spacejam test-packages --driver-package=practicalmeteor:mocha-console-reporter ./
+	@meteor test-packages --driver-package=meteortesting:mocha --once --port 5001 ./
 
 .PHONY: test runner

@@ -25,7 +25,7 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use([
     'coffeescript',
-    'practicalmeteor:mocha',
+    'meteortesting:mocha',
     'practicalmeteor:chai',
     'practicalmeteor:sinon',
     'lookback:emoji'
