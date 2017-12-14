@@ -327,7 +327,8 @@ make runner
 
 ## Version history
 
-- `0.3.2` - Fix `testBD` being parsed to `test😎`. I.e. require whitespace between ASCII smileys.
+- `0.3.3` - Fix `testBD` being parsed to `test😎`.
+- `0.3.2` - Fix `testBDfoo` being parsed to `test😎`. I.e. require whitespace between ASCII smileys.
 - `0.3.1` - Add polyfill for `String.fromCodePoint`.
 - `0.3.0`
   This release moves to using native unicode emojis as default. If native emojis are not supported in the browser, it'll fallback to the previous image solution.
