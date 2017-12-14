@@ -327,6 +327,7 @@ make runner
 
 ## Version history
 
+- `0.3.4` - Fix spacing issues when parsing smileys.
 - `0.3.3` - Fix `testBD` being parsed to `test😎`.
 - `0.3.2` - Fix `testBDfoo` being parsed to `test😎`. I.e. require whitespace between ASCII smileys.
 - `0.3.1` - Add polyfill for `String.fromCodePoint`.
