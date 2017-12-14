@@ -71,6 +71,13 @@ describe 'Emojis', ->
         .and.not.contain ':boom:'
         .and.not.contain ':D'
 
+    it 'should be able to parse smileys in the beginning of a string', ->
+        results = [':D', ':D hey'].map((str) -> Emojis.parse(str))
+
+        results.forEach((res) ->
+          res.should.contain "<span class='emoji' title='smiley'>😃</span>"
+        )
+
     it 'should parse text to emoji images', ->
       Emojis.useImages = true
       result = Emojis.parse(text)
