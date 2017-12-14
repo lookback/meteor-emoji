@@ -54,12 +54,26 @@ describe 'Emojis', ->
   describe '#getAllTokens', ->
 
     it 'should return all raw smiley and emoji tokens from a text', ->
-      text = 'Hey there :D This is a random text :boom: with a couple of smileys:)'
+      text = 'Hey there :D This is a random text :boom: with a couple of smileys:) :)'
       tokens = Emojis.getAllTokens(text)
 
-      tokens.length.should.equal(2)
-      tokens[0].should.equal(':D')
-      tokens[1].should.equal(':boom:')
+      tokens.total.should.equal(3)
+
+      tokens.smileys.length.should.equal(2)
+      tokens.emojis.length.should.equal(1)
+
+      tokens.smileys[0].should.equal(':D')
+      tokens.smileys[1].should.equal(':)')
+
+      tokens.emojis[0].should.equal(':boom:')
+
+    it 'should work on non matching texts', ->
+      text = 'Hey there'
+      tokens = Emojis.getAllTokens(text)
+
+      tokens.total.should.equal(0)
+      tokens.smileys.length.should.equal(0)
+      tokens.emojis.length.should.equal(0)
 
   describe '#parse', ->
 
