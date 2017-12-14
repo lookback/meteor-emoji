@@ -65,10 +65,9 @@ describe 'Emojis', ->
       result.should
         .contain "<span class='emoji' title='boom'>💥</span>"
         .contain "<span class='emoji' title='smiley'>😃</span>"
-        .contain "<span class='emoji' title='blush'>😊</span>"
         .and.contain ':+1:'
         .and.contain ":')"
-        .and.not.contain ':)'
+        .and.not.contain "<span class='emoji' title='blush'>😊</span>"
         .and.not.contain ':boom:'
         .and.not.contain ':D'
 
@@ -80,6 +79,5 @@ describe 'Emojis', ->
         .contain "<img src='/images/emojis/1f4a5.png' title='boom' alt='💥' class='emoji'>"
         .and.contain "<img src='/images/emojis/1f603.png' title='smiley' alt='😃' class='emoji'>"
         .and.contain ':+1:'
-        .and.not.contain ':)'
         .and.not.contain ':boom:'
         .and.not.contain ':D'

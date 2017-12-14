@@ -1,7 +1,7 @@
 # Force whitespace between text and emoji/smiley, for safety. Otherwise
 # this guy will collide with URLs like http://lolol.com (see the ':/' in there? :D).
 shortnameRegexp = /\B:([\w+-]+):/g
-smileyRegexp = /(\<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[\;\=]|[\:\;\=B8][\-\^]?[3DOPp\@\$\*\\\)\(\/\|])(?=\s|[\!\.\?]|$)/g
+smileyRegexp = /(?:^|\s)(\<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[\;\=]|[\:\;\=B8][\-\^]?[3DOPp\@\$\*\\\)\(\/\|])(?=\s|[\!\.\?]|$)/g
 
 # Emulation of Ruby's String#codepoints. Takes Javascript's flawed
 # unicode implementation into consideration regarding surrogate pairs.
