@@ -116,6 +116,12 @@ Emojis.imageTemplate = toImage
 Emojis.toUnicode = (text) ->
   parse text, (emoji) -> emoji.emoji || ''
 
+Emojis.getAllTokens = (text) ->
+  smileys = text.match(smileyRegexp).map((s) -> s.trim())
+  emojis = text.match(shortnameRegexp).map((s) -> s.trim())
+
+  return smileys.concat(emojis)
+
 Emojis.parse = (text) ->
   parse text, (emoji) -> emoji.toHTML()
 

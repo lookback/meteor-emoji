@@ -51,6 +51,16 @@ describe 'Emojis', ->
       result = Emojis.toUnicode(text)
       result.should.equal 'Hello there '
 
+  describe '#getAllTokens', ->
+
+    it 'should return all raw smiley and emoji tokens from a text', ->
+      text = 'Hey there :D This is a random text :boom: with a couple of smileys:)'
+      tokens = Emojis.getAllTokens(text)
+
+      tokens.length.should.equal(2)
+      tokens[0].should.equal(':D')
+      tokens[1].should.equal(':boom:')
+
   describe '#parse', ->
 
     text = "Hello :boom: I am a :D and :') This is no a smiley:) and this is not an emoji:+1:"
