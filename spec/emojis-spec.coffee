@@ -78,6 +78,10 @@ describe 'Emojis', ->
           res.should.contain "<span class='emoji' title='smiley'>😃</span>"
         )
 
+    it 'should not mess up the whitespace in the input', ->
+      smileys = Emojis.parse('Hey :D there')
+      smileys.should.equal "Hey <span class='emoji' title='smiley'>😃</span> there"
+
     it 'should parse text to emoji images', ->
       Emojis.useImages = true
       result = Emojis.parse(text)

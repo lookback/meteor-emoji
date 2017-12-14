@@ -1,7 +1,7 @@
 # Force whitespace between text and emoji/smiley, for safety. Otherwise
 # this guy will collide with URLs like http://lolol.com (see the ':/' in there? :D).
 shortnameRegexp = /\B:([\w+-]+):/g
-smileyRegexp = /(?:^|\s)(\<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[\;\=]|[\:\;\=B8][\-\^]?[3DOPp\@\$\*\\\)\(\/\|])(?=\s|[\!\.\?]|$)/g
+smileyRegexp = /(^|\s)(\<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[\;\=]|[\:\;\=B8][\-\^]?[3DOPp\@\$\*\\\)\(\/\|])(?=\s|[\!\.\?]|$)/g
 
 # Emulation of Ruby's String#codepoints. Takes Javascript's flawed
 # unicode implementation into consideration regarding surrogate pairs.
@@ -77,16 +77,16 @@ parse = (text, fn) ->
   check fn, Match.Optional(Function)
 
   text
-  .replace smileyRegexp, (match, smiley, nose) ->
+  .replace smileyRegexp, (match, space, smiley, nose) ->
     smiley = smiley.toUpperCase()
     smiley = if nose then smiley.replace(/:-/g, ':') else smiley
 
     emoji = Emojis.findOne(ascii: smiley)
 
     if emoji
-      return if fn then fn(emoji) else emoji
+      return "#{space}#{if fn then fn(emoji) else emoji}"
     else
-      return match
+      return "#{space}#{match}"
 
   .replace shortnameRegexp, (match, alias) ->
     emoji = Emojis.findOne(alias: alias)
