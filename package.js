@@ -18,7 +18,7 @@ Package.onUse(function(api) {
     'underscore'
   ], both);
 
-  api.use('templating', 'client');
+  api.use('blaze-html-templates', 'client');
 
   api.addAssets('seed/emojis.json', 'server');
 
