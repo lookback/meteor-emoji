@@ -1,4 +1,6 @@
-should()
+chai = Npm.require 'chai'
+
+chai.should()
 
 describe 'Emojis', ->
 

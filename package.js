@@ -8,9 +8,14 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.0.4.2');
+  api.use([
+    'mongo',
+    'coffeescript',
+    'modules',
+    'check',
+    'underscore'
+  ], both);
 
-  api.use(['mongo', 'coffeescript', 'check', 'underscore'], both);
   api.use('templating', 'client');
 
   api.addAssets('seed/emojis.json', 'server');
@@ -23,11 +28,14 @@ Package.onUse(function(api) {
 });
 
 Package.onTest(function(api) {
+  Npm.depends({
+    chai: '4.1.2',
+    sinon: '4.2.2'
+  });
+
   api.use([
     'coffeescript',
     'meteortesting:mocha',
-    'practicalmeteor:chai',
-    'practicalmeteor:sinon',
     'lookback:emoji'
   ]);
 
