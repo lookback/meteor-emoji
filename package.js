@@ -12,7 +12,7 @@ Package.onUse(function(api) {
 
   api.use([
     'mongo',
-    'coffeescript',
+    'coffeescript@2.0.2_1',
     'modules',
     'check',
     'underscore'
