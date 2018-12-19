@@ -5,7 +5,7 @@ This package makes it easier to manage 💖💥🌈 in your Meteor app.
 ## Features
 
 - ✅ Renders unicode emojis from shortnames (:smile:).
-- ✅ Adds an `Emoji` collection to the client and server filled with over 800 emojis. Suitable for autocompletions and similar.
+- ✅ Adds an `Emoji` collection to the client filled with over 800 emojis. Suitable for autocompletions and similar.
 - ✅ Includes `emoji` template helpers for easy rendering of emojis inside your Meteor templates.
 - ✅ Parses arbitrary strings and replaces any emoji shortnames with emoji unicode representations.
 - ✅ Parses common ASCII smileys and maps to corresponding emoji.
@@ -40,27 +40,7 @@ You would typically put the emoji images in the `public/images` directory, in an
 
 ### Using the collection
 
-All emojis are initially parsed from the `emojis.json` file in this repo. The `emojis` collection is seeded on application startup if the collection is empty.
-
 Having all emojis in the collection lets you implement things like autocompletions for emojis, where you can query the `alias` and `tags` fields for the given keyboard input.
-
-The emojis in the collection is not published by default. To do so, you need to add this somewhere on your server:
-
-```js
-Meteor.publish('emojis', function() {
-  // Here you can choose to publish a subset of all emojis
-  // if you'd like to.
-  return Emojis.find();
-});
-```
-
-And subscribe on the client:
-
-```js
-Meteor.startup(function() {
-  Meteor.subscribe('emojis');
-});
-```
 
 Now you can run arbitrary queries for any emoji on both the server and the client.
 
@@ -267,28 +247,7 @@ Returns the current base path.
 
 #### `Emojis.seed() -> Number`
 
-*Server only.*
-
-Wipes the `emojis` collection, and re-populates it from the `emojis.json` file. Returns the number of emojis inserted. Useful for when you've made changes to the JSON file and wants to update the collection.
-
-Sample usage (on the server):
-
-```js
-/**
- * Expose a `emojis/reset` method for resetting the emojis collection.
- * For admins only.
- */
-Meteor.methods({
-  'emojis/reset': function() {
-    if(!Meteor.userId() || !Meteor.user().admin) {
-      throw new Meteor.Error(403, 'Access denied.');
-    }
-
-    var count = Emojis.seed();
-    return 'Inserted ' + count + ' emojis.';
-  }
-});
-```
+Wipes the `emojis` collection, and re-populates it. Returns the number of emojis inserted.
 
 ## Suggested styling
 
@@ -327,6 +286,7 @@ make runner
 
 ## Version history
 
+- `0.5.0` - Move all emojis from the server to the client (see [#6](https://github.com/lookback/meteor-emoji/pull/6)).
 - `0.4.1` - Let `Emojis.getAllTokens` return an object with `total`, `smileys`, and `emojis` props.
 - `0.4.0` - Add `Emojis.getAllTokens` method for getting all raw matched tokens from a text.
 - `0.3.4` - Fix spacing issues when parsing smileys.
