@@ -61,11 +61,6 @@ Emojis = new Mongo.Collection 'emojis',
 
     return emoji
 
-if Meteor.isServer
-  Emojis._ensureIndex(alias: 1)
-  Emojis._ensureIndex(ascii: 1)
-
-
 # General parse function.
 #
 # Parses `text` and returns emoji objects from :shortnames: and ASCII

@@ -3,7 +3,7 @@ var both = ['client', 'server'];
 Package.describe({
   name: 'lookback:emoji',
   summary: 'Easily render and manage emojis in Meteor.',
-  version: '0.4.2',
+  version: '0.5.0',
   git: 'https://github.com/lookback/meteor-emoji'
 });
 
@@ -20,11 +20,9 @@ Package.onUse(function(api) {
 
   api.use('templating@1.3.2', 'client');
 
-  api.addAssets('seed/emojis.json', 'server');
-
   api.addFiles(['polyfill.js', 'emojis.coffee'], both);
   api.addFiles('template.coffee', 'client');
-  api.addFiles('seed/seed.coffee', 'server');
+  api.addFiles('seed/seed.coffee', 'client');
 
   api.export('Emojis', both);
 });
